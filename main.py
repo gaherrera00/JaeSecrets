@@ -1,9 +1,10 @@
 import secrets
 from mutation import mutacoes, mutacoes_funcoes
 from wordlist import palavraFiltrada
+from blacklist import palavra_proibida
 
 
-def gerarReceita(minimo=2, teto_min=2, teto_max=3):
+def gerarReceita(minimo=1, teto_min=1, teto_max=2):
     teto = teto_min + secrets.randbelow(teto_max - teto_min + 1)
     receitaMutacoes = []
     intensidade = 0
@@ -36,22 +37,22 @@ def aplicarReceita(palavra, receita):
     return palavra
 
 
-def gerarSenhaFinal():
-    palavras = listaPalavras()
-
-    mutadas = []
-    for palavra in palavras:
+def mutarComSeguranca(palavra):
+    while True:
         receita = gerarReceita()
-        mutadas.append(aplicarReceita(palavra, receita))
+        mutada = aplicarReceita(palavra, receita)
+        if not palavra_proibida(mutada):
+            return mutada
 
-    print("".join(mutadas))
+
+def gerarSenha():
+    while True:
+        palavras = listaPalavras()
+        mutadas = [mutarComSeguranca(palavra) for palavra in palavras]
+        senha = "".join(mutadas)
+        if not palavra_proibida(senha):
+            return senha
 
 
-gerarSenhaFinal()
-
-"""
-loop final pra mutacao do string global
-def sortear_mutacoes_globais():
-    # teto mais baixo para não bagunçar tudo de novo
-    return {nome: rng.randint(0, 2) for nome in MUTACOES if rng.randint(0, 99) < 20}
-"""
+if __name__ == "__main__":
+    print(gerarSenha())

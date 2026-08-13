@@ -1,6 +1,6 @@
 import secrets
 
-SIMBOLOS = "!@#$%&*-_"
+SIMBOLOS = "!@#$&*-_"
 _rand = secrets.SystemRandom()
 
 
@@ -14,14 +14,18 @@ def MaiusculoAleatorio(palavra, qtd=1):
 
 def InserirNumero(palavra, qtd=1):
     for _ in range(qtd):
-        pos = _rand.randrange(len(palavra) + 1)
+        if not palavra:
+            break
+        pos = _rand.randrange(1, len(palavra) + 1)
         palavra = palavra[:pos] + str(_rand.randrange(10)) + palavra[pos:]
     return palavra
 
 
 def InserirSimbolo(palavra, qtd=1):
     for _ in range(qtd):
-        pos = _rand.randrange(len(palavra) + 1)
+        if not palavra:
+            break
+        pos = _rand.randrange(1, len(palavra) + 1)
         palavra = palavra[:pos] + _rand.choice(SIMBOLOS) + palavra[pos:]
     return palavra
 

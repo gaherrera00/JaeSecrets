@@ -8,5 +8,5 @@ def remover_acentos(texto):
 
 
 palavras = set(top_n_list("pt", 50000))
-palavras = {p for p in palavras if 4 <= len(p) <= 10}
+palavras = {p for p in palavras if 4 <= len(p) <= 10 and p.isalpha()}
 palavraFiltrada = list({remover_acentos(p).lower() for p in palavras})
