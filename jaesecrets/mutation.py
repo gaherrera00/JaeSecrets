@@ -4,7 +4,7 @@ SIMBOLOS = "!@#$&*-_"
 _rand = secrets.SystemRandom()
 
 
-def MaiusculoAleatorio(palavra, qtd=1):
+def MaiusculoAleatorio(palavra: str, qtd: int = 1) -> str:
     if not palavra:
         return palavra
     qtd = min(qtd, len(palavra))
@@ -12,7 +12,7 @@ def MaiusculoAleatorio(palavra, qtd=1):
     return "".join(c.upper() if i in idx else c for i, c in enumerate(palavra))
 
 
-def InserirNumero(palavra, qtd=1):
+def InserirNumero(palavra: str, qtd: int = 1) -> str:
     for _ in range(qtd):
         if not palavra:
             break
@@ -21,7 +21,7 @@ def InserirNumero(palavra, qtd=1):
     return palavra
 
 
-def InserirSimbolo(palavra, qtd=1):
+def InserirSimbolo(palavra: str, qtd: int = 1) -> str:
     for _ in range(qtd):
         if not palavra:
             break
@@ -30,7 +30,7 @@ def InserirSimbolo(palavra, qtd=1):
     return palavra
 
 
-def LetraPraNumero(palavra, qtd=1):
+def LetraPraNumero(palavra: str, qtd: int = 1) -> str:
     mapa = {"a": "4", "e": "3", "i": "1", "o": "0", "s": "5", "g": "9", "b": "8"}
     alvos = [i for i, c in enumerate(palavra) if c.lower() in mapa]
     if not alvos:
@@ -41,21 +41,32 @@ def LetraPraNumero(palavra, qtd=1):
     )
 
 
-def CamelCase(palavra, qtd=1):
-    return "".join(
-        c.upper() if i % 2 == 1 else c.lower() for i, c in enumerate(palavra)
-    )
+def CamelCase(palavra: str, qtd: int = 1) -> str:
+    if not palavra:
+        return palavra
+    idx = set(_rand.sample(range(len(palavra)), min(qtd, len(palavra))))
+    return "".join(c.upper() if i in idx else c.lower() for i, c in enumerate(palavra))
 
 
-def PalavraMaiuscula(palavra, qtd=1): 
-    return palavra.upper()
+def PalavraMaiuscula(palavra: str, qtd: int = 1) -> str:
+    if not palavra:
+        return palavra
+    idx = set(_rand.sample(range(len(palavra)), min(qtd, len(palavra))))
+    return "".join(c.upper() if i in idx else c.lower() for i, c in enumerate(palavra))
 
 
-def InverteLetras(palavra, qtd=1): 
-    return palavra[::-1]
+def InverteLetras(palavra: str, qtd: int = 1) -> str:
+    lista = list(palavra)
+    n = min(qtd, len(lista) // 2)
+    for _ in range(n):
+        if len(lista) < 2:
+            break
+        i, j = _rand.sample(range(len(lista)), 2)
+        lista[i], lista[j] = lista[j], lista[i]
+    return "".join(lista)
 
 
-def DuplicarLetra(palavra, qtd=1):
+def DuplicarLetra(palavra: str, qtd: int = 1) -> str:
     for _ in range(qtd):
         if not palavra:
             break
@@ -64,7 +75,7 @@ def DuplicarLetra(palavra, qtd=1):
     return palavra
 
 
-def LetraParaSimbulo(palavra, qtd=1):
+def LetraParaSimbolo(palavra: str, qtd: int = 1) -> str:
     mapa = {"a": "@", "s": "$", "i": "!", "o": "*", "e": "€"}
     alvos = [i for i, c in enumerate(palavra) if c.lower() in mapa]
     if not alvos:
@@ -75,6 +86,7 @@ def LetraParaSimbulo(palavra, qtd=1):
     )
 
 
+# Registro de funções
 mutacoes_funcoes = {
     "MaiusculoAleatorio": MaiusculoAleatorio,
     "InserirNumero": InserirNumero,
@@ -84,9 +96,10 @@ mutacoes_funcoes = {
     "PalavraMaiuscula": PalavraMaiuscula,
     "InverteLetras": InverteLetras,
     "DuplicarLetra": DuplicarLetra,
-    "LetraParaSimbulo": LetraParaSimbulo,
+    "LetraParaSimbolo": LetraParaSimbolo, 
 }
 
+# Intervalos de sorteio (0-99) e faixa de quantidade (min, max)
 mutacoes = {
     "MaiusculoAleatorio": ((0, 29), 1, 6),
     "InserirNumero": ((30, 49), 1, 3),
@@ -96,5 +109,5 @@ mutacoes = {
     "PalavraMaiuscula": ((85, 89), 1, 1),
     "InverteLetras": ((90, 93), 0, 1),
     "DuplicarLetra": ((94, 96), 0, 1),
-    "LetraParaSimbulo": ((97, 99), 0, 1),
+    "LetraParaSimbolo": ((97, 99), 0, 1),
 }
